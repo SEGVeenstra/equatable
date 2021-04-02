@@ -65,3 +65,13 @@ int _finish(int hash) {
 /// Returns a string for [props].
 String mapPropsToString(Type runtimeType, List<Object?> props) =>
     '$runtimeType(${props.map((prop) => prop.toString()).join(', ')})';
+
+String mapPropsMapToString(Type runtimeType, Map<String, Object?> props) {
+  var string = '$runtimeType(\n';
+
+  props.forEach((key, prop) {
+    string += '  $key: $prop\n';
+  });
+  string += ')';
+  return string;
+}

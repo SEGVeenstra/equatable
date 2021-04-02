@@ -7,10 +7,13 @@ class Credentials extends Equatable {
   final String password;
 
   @override
-  List<Object> get props => [username, password];
+  Map<String, Object?>? get propsMap => {
+        'username': username,
+        'password': password,
+      };
 
   @override
-  bool get stringify => false;
+  bool get stringify => true;
 }
 
 class EquatableDateTime extends DateTime with EquatableMixin {

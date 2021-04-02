@@ -26,7 +26,14 @@ abstract class Equatable {
   /// The list of properties that will be used to determine whether
   /// two instances are equal.
   /// {@endtemplate}
-  List<Object?> get props;
+  List<Object?> get props => propsMap?.values.toList() ?? [];
+
+  /// {@template equatable_props}
+  /// A map of keys and properties that will be used to determine whether
+  /// two instances are equal.
+  /// The keys will be used by [stringify] to generate key:value pairs.
+  /// {@endtemplate}
+  Map<String, Object?>? get propsMap => null;
 
   /// {@template equatable_stringify}
   /// If set to `true`, the [toString] method will be overridden to output
@@ -56,13 +63,19 @@ abstract class Equatable {
   String toString() {
     switch (stringify) {
       case true:
+        if(propsMap != null)
+          return mapPropsMapToString(runtimeType, propsMap!);
         return mapPropsToString(runtimeType, props);
       case false:
         return '$runtimeType';
       default:
-        return EquatableConfig.stringify == true
-            ? mapPropsToString(runtimeType, props)
-            : '$runtimeType';
+        if(EquatableConfig.stringify == true) {
+          if(propsMap != null)
+            return mapPropsMapToString(runtimeType, propsMap!);
+          return mapPropsToString(runtimeType, props);
+        } else {
+          return '$runtimeType';
+        }
     }
   }
 }
